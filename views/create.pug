@@ -1,0 +1,8 @@
+extends layout
+
+block content
+  form(action="/hardware-inventory/create" method="post")
+    input(type="text" name="name" value="Name")
+    input(type="text" name="label" value="LAB-0")
+    input(type="text" name="category" value="category")
+    input(type="submit")

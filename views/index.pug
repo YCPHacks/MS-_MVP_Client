@@ -1,0 +1,16 @@
+extends layout
+
+block content
+  
+  a(href="/hardware-inventory/create") Create new...
+  table
+    tr
+      th name
+      th label
+      th category
+    tbody
+      each hardwareInventoryItem of hardwareInventoryItems.data
+        tr
+          td= hardwareInventoryItem.details.name
+          td= hardwareInventoryItem.details.label
+          td= hardwareInventoryItem.details.category
