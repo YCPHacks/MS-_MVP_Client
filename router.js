@@ -1,4 +1,5 @@
 const router = require('express').Router();
+const { fetch } = require('undici');
 
 router.get('/', (req, res) => {
   res.redirect('/hardware-inventory');

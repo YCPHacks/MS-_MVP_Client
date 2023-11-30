@@ -2,9 +2,14 @@ const express = require('express');
 const {
   auth
 } = require('express-openid-connect');
-const fastify = require('fastify')({ logger: true });
-
 const { router } = require('./router.js');
+
+const app = express();
+
+const port = process.env.PORT;
+
+app.use(express.urlencoded({ extended: false }));
+app.use(express.json());
 
 // Configuring the express-openid-client SDK
 const authConfig = {
@@ -17,23 +22,10 @@ const authConfig = {
   }
 };
 
-// Configuring application hosting variables
-const port = process.env.PORT;
+app.use(auth(authConfig));
 
-fastify.register(require("@fastify/view"), {
-  engine: {
-    pug: require("pug"),
-  },
+app.use(router);
+
+app.listen(port, () => {
+  console.log(`Listening on port ${port}...`);
 });
-
-fastify.register(require('@fastify/express'))
-  .after(() => {
-    fastify.use(express.urlencoded({ extended: false }));
-    fastify.use(express.json());
-
-    fastify.use(auth(authConfig));
-
-    fastify.use(router);
-  });
-
-fastify.listen({ port });
