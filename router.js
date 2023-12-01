@@ -74,8 +74,6 @@ router.post('/hardware-inventory/create', async (req, res) => {
     if (!response.ok) {
       new Error('AHH!');
     }
-
-  console.log(res.status);
   } catch (err) {
     throw err;
   }
