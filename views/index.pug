@@ -1,16 +1,42 @@
 extends layout
 
 block content
+  .container.mt-3
+    .row
+      .col-lg-6
+        .d-flex.justify-content-start
+          h2 Hardware Inventory
+      .col
+        .d-flex.justify-content-end
+          if user['@ycphacks/roles'].includes('Organizer')
+            a.btn.btn-outline-primary(href='/hardware-inventory/create') Create new hardware
+          else
+            button.btn.btn-outline-primary(type="button" onclick=`denyAccess()`) Create new hardware
+
+    .row 
+      table.table 
+        thead 
+          tr 
+            th Name 
+            th Tag 
+            th Category 
+          tbody 
+            each hardwareInventoryItem of hardwareInventoryItems.data
+              tr
+                td= hardwareInventoryItem.details.name
+                td= hardwareInventoryItem.details.label
+                td= hardwareInventoryItem.details.category
   
-  a(href="/hardware-inventory/create") Create new...
-  table
-    tr
-      th name
-      th label
-      th category
-    tbody
-      each hardwareInventoryItem of hardwareInventoryItems.data
-        tr
-          td= hardwareInventoryItem.details.name
-          td= hardwareInventoryItem.details.label
-          td= hardwareInventoryItem.details.category
+  .position-fixed.bottom-0.end-0.p-3(style="z-index: 11")
+    .toast.align-items-center.text-white.bg-danger.border-0.hide#unauthorizedToast(role="alert" aria-live="assertive" aria-atomic="true")
+      .d-flex
+        .toast-body You are not authorized to view this page.
+        button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
+  
+  block javascript
+    script.
+      function denyAccess(){
+        var unauthorizedToast = new bootstrap.Toast(document.getElementById('unauthorizedToast'));
+        unauthorizedToast.show();
+      }
+    

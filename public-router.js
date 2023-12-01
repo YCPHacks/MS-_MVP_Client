@@ -2,7 +2,7 @@ const router = require('express').Router();
 
 router.use((req, res, next) => {
   res.locals.user = req.oidc?.user;
-  res.locals.isAuthenticated = false;//req.oidc?.isAuthenticated();
+  res.locals.isAuthenticated = req.oidc?.isAuthenticated();
   
   next();
 });

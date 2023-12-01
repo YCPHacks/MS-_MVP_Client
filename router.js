@@ -1,5 +1,6 @@
 const router = require('express').Router();
 const { fetch } = require('undici');
+const { claimIncludes } = require('express-openid-connect');
 
 router.use((req, res, next) => {
   res.locals.user = req.oidc.user;
@@ -36,8 +37,6 @@ router.get('/hardware-inventory', async (req, res) => {
     throw err;
   }
 
-  console.log(res.locals);
-
   res.status(200).render(
     'index.pug',
     {
@@ -46,11 +45,12 @@ router.get('/hardware-inventory', async (req, res) => {
   );
 });
 
-router.get('/hardware-inventory/create', (req, res) => {
+router.get('/hardware-inventory/create', claimIncludes('@ycphacks/roles', 'Organizer'), async (req, res) => {
+
   res.render('./create.pug');
 });
 
-router.post('/hardware-inventory/create', async (req, res) => {
+router.post('/hardware-inventory/create', claimIncludes('@ycphacks/roles', 'Organizer'), async (req, res) => {
   let { token_type, access_token, isExpired, refresh } = req.oidc.accessToken;
 
   const {
@@ -81,6 +81,10 @@ router.post('/hardware-inventory/create', async (req, res) => {
   }
 
   res.redirect(303, '/hardware-inventory');
+});
+
+router.get('/callback', (req, res) => {
+  res.redirect('/');
 });
 
 
