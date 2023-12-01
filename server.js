@@ -3,6 +3,7 @@ const {
   auth
 } = require('express-openid-connect');
 const { router } = require('./router.js');
+const { publicRouter } = require('./public-router.js');
 
 const app = express();
 
@@ -10,6 +11,9 @@ const port = process.env.PORT;
 
 app.use(express.urlencoded({ extended: false }));
 app.use(express.json());
+app.use('/public', express.static('public'));
+
+app.use(publicRouter);
 
 // Configuring the express-openid-client SDK
 const authConfig = {

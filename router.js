@@ -3,6 +3,7 @@ const { fetch } = require('undici');
 
 router.use((req, res, next) => {
   res.locals.user = req.oidc.user;
+  res.locals.isAuthenticated = req.oidc.isAuthenticated();
 
   next();
 });
@@ -34,6 +35,8 @@ router.get('/hardware-inventory', async (req, res) => {
   } catch (err) {
     throw err;
   }
+
+  console.log(res.locals);
 
   res.status(200).render(
     'index.pug',
