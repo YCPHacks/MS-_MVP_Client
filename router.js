@@ -1,6 +1,12 @@
 const router = require('express').Router();
 const { fetch } = require('undici');
 
+router.use((req, res, next) => {
+  res.locals.user = req.oidc.user;
+
+  next();
+});
+
 router.get('/', (req, res) => {
   res.redirect('/hardware-inventory');
 //  res.send('<div><a href="/hardware-inventory">Hardware inventory</a></div>');
