@@ -42,7 +42,7 @@ html
           #navbarNav.collapse.navbar-collapse
             ul.navbar-nav
               li.nav-item
-                a.nav-link.active(href="/") Hardware Checkout
+                a.nav-link.active(href="/") Hardware Management
           nav.navbar.d-none.d-md-block
             if !isAuthenticated
               nav-item
@@ -58,3 +58,5 @@ html
                     a.dropdown-item(href="/logout") Log Out
 
     block content
+  
+  block javascript
