@@ -34,7 +34,7 @@ html
     block navbar
       nav.navbar.navbar-expand-lg.navbar-light.custom-navbar.mr-auto
         .container
-          a.navbar-brand.mr-2.ml-5(href="#")
+          a.navbar-brand.mr-2.ml-5(href="/")
             img.mb-1(src="/public/images/logo-primary.png", alt="Logo")
             span.mx-1
             | YCP Hacks
@@ -44,6 +44,12 @@ html
             ul.navbar-nav
               li.nav-item
                 a.nav-link.active(href="/") Hardware Management
+              for navLink in navLinks
+                li.nav-item
+                  if navLink.href
+                    a.nav-link(href=navLink.href)= navLink.label
+                  else
+                    a.nav-link.disabled= navLink.label
           nav.navbar.d-none.d-md-block
             if !isAuthenticated
               nav-item

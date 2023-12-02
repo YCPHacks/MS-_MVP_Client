@@ -6,6 +6,18 @@ router.use((req, res, next) => {
   res.locals.user = req.oidc.user;
   res.locals.isAuthenticated = req.oidc.isAuthenticated();
 
+  // Set the custom NavLinks here
+  res.locals.navLinks = [
+    {
+      label: 'Legacy Hardware Management',
+      href: process.env.LEGACY_HARDWARE_MANAGEMENT_URL
+    },
+    {
+      label: 'Legacy Message Manager',
+      href: process.env.LEGACY_SCHEDULED_MESSAGES_MANAGEMENT_URL
+    }
+  ]
+
   next();
 });
 
