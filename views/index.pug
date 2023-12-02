@@ -24,16 +24,17 @@ block content
                 td= hardwareInventoryItem.details.label
                 td= hardwareInventoryItem.details.category
   
-  .position-fixed.bottom-0.end-0.p-3(style="z-index: 11")
-    .toast.align-items-center.text-white.bg-danger.border-0.hide#unauthorizedToast(role="alert" aria-live="assertive" aria-atomic="true")
+  .position-fixed.bottom-0.start-50.translate-middle-x.pb-3
+    .toast.align-items-center.text-white.bg-primary.border-0.hide#welcomeToast(role="alert" aria-live="assertive" aria-atomic="true")
       .d-flex
-        .toast-body You are not authorized to view this page.
+        if !!user['@ycphacks/roles']
+          .toast-body Welcome #{user['@ycphacks/roles']} #{user.name}!
         button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
   
   block javascript
     script.
-      function denyAccess(){
-        var unauthorizedToast = new bootstrap.Toast(document.getElementById('unauthorizedToast'));
-        unauthorizedToast.show();
-      }
+      (function() {
+        var welcomeToast = new bootstrap.Toast(document.getElementById('welcomeToast'));
+        welcomeToast.show();
+      })();
     
