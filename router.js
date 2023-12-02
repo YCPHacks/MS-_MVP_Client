@@ -93,9 +93,13 @@ router.post('/hardware-inventory/create', claimIncludes('@ycphacks/roles', 'Orga
   res.redirect(303, '/hardware-inventory');
 });
 
-router.get('/callback', (req, res) => {
-  res.redirect('/');
-});
+// router.get('/callback', (req, res) => {
+//   res.redirect('/');
+// });
+
+router.use((req, res, next) => {
+  res.status(404).render('404.pug');
+})
 
 
 module.exports.router = router;
