@@ -24,7 +24,6 @@ router.use(async (req, res, next) => {
     console.error(err);
   }
   console.log(res.locals.user);
-
   // Set the custom NavLinks here
   res.locals.navLinks = [
     {
