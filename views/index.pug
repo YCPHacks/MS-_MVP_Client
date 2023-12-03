@@ -25,16 +25,24 @@ block content
                 td= hardwareInventoryItem.details.category
   
   .position-fixed.bottom-0.start-50.translate-middle-x.pb-3
-    .toast.align-items-center.text-white.bg-primary.border-0.hide#welcomeToast(role="alert" aria-live="assertive" aria-atomic="true")
-      .d-flex
-        if !!user['@ycphacks/roles']
-          .toast-body Welcome #{user['@ycphacks/roles']} #{user.name}!
-        button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
+    if !!user['@ycphacks/favorite_color']
+      .toast.align-items-center.text-white.border-0#welcomeToastCustom(role="alert" aria-live="assertive" aria-atomic="true" style=`background-color:${user['@ycphacks/favorite_color']}`)
+        .d-flex
+          if !!user['@ycphacks/roles']
+            .toast-body Welcome #{user['@ycphacks/roles']} #{user.name}!
+          button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
+    else
+      .toast.align-items-center.text-white.border-0.bg-primary#welcomeToastCustom(role="alert" aria-live="assertive" aria-atomic="true")
+        .d-flex
+          if !!user['@ycphacks/roles']
+            .toast-body Welcome #{user['@ycphacks/roles']} #{user.name}!
+          button.btn-close.btn-close-white.me-2.m-auto(type="button" data-bs-dismiss="toast" aria-label="Close")
   
   block javascript
     script.
       (function() {
-        var welcomeToast = new bootstrap.Toast(document.getElementById('welcomeToast'));
+        var welcomeToast = new bootstrap.Toast(document.getElementById('welcomeToastCustom'));
+        console.log(welcomeToast);
         welcomeToast.show();
       })();
     

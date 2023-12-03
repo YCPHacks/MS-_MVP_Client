@@ -18,18 +18,19 @@ block content
         if user['@ycphacks/roles'][0]
           input#roles.form-control(name='roles', type='text', placeholder='Role', value=user['@ycphacks/roles'][0] disabled)
         else
-          input#roles.form-control(name='roles', type='text', placeholder='Role', value='You do have not been assigned a role' disabled)
+          input#roles.form-control(name='roles', type='text', placeholder='Role', value='You have not been assigned a role' disabled)
       .mb-3
         label(for='favorite_color' class='form-label') Favorite Color:
-        select#favorite_color.form-select(name='favorite_color')
-          option Choose a color
-          option(value='blue' selected=user['@ycphacks/favorite_color']=='blue') Blue
-          option(value='red' selected=user['@ycphacks/favorite_color']=='red') Red
-          option(value='green' selected=user['@ycphacks/favorite_color']=='green') Green
-          option(value='yellow' selected=user['@ycphacks/favorite_color']=='yellow') Yellow
-          option(value='orange' selected=user['@ycphacks/favorite_color']=='orange') Orange
-          option(value='purple' selected=user['@ycphacks/favorite_color']=='purple') Purple
-          option(value='pink' selected=user['@ycphacks/favorite_color']=='pink') Pink
+        input#favorite_color.form-control(name='favorite_color', type='color', placeholder='Favorite Color', value=user['@ycphacks/favorite_color'])
+        //- select#favorite_color.form-select(name='favorite_color')
+        //-   option Choose a color
+        //-   option(value='blue' selected=user['@ycphacks/favorite_color']=='blue') Blue
+        //-   option(value='red' selected=user['@ycphacks/favorite_color']=='red') Red
+        //-   option(value='green' selected=user['@ycphacks/favorite_color']=='green') Green
+        //-   option(value='yellow' selected=user['@ycphacks/favorite_color']=='yellow') Yellow
+        //-   option(value='orange' selected=user['@ycphacks/favorite_color']=='orange') Orange
+        //-   option(value='purple' selected=user['@ycphacks/favorite_color']=='purple') Purple
+        //-   option(value='pink' selected=user['@ycphacks/favorite_color']=='pink') Pink
 
       .mb-3
         label(for='phone_number' class='form-label') Phone Number:

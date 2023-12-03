@@ -7,18 +7,22 @@ router.use(async (req, res, next) => {
   res.locals.isAuthenticated = req.oidc.isAuthenticated();
 
   const user = req.oidc.user;
-  const results = await fetch(`${process.env.GET_USER_METADATA_URL}?user_id=${user.sub}`, {
-    method: 'GET',
-    headers: {
-      'Content-Type': 'application/json'
-    }
-  }).then(res => res.json());
-  // console.log(user);
-  console.log(results);
-  const keys = Object.keys(results.user_metadata);
-  keys.forEach((key) => {
-    res.locals.user[key] = results.user_metadata[key];
-  });
+  try {
+    const results = await fetch(`${process.env.GET_USER_METADATA_URL}?user_id=${user.sub}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((res) => res.json());
+    // console.log(user);
+    console.log(results);
+    const keys = Object.keys(results.user_metadata);
+    keys.forEach((key) => {
+      res.locals.user[key] = results.user_metadata[key];
+    });
+  } catch (err) {
+    console.error(err);
+  }
   console.log(res.locals.user);
 
   // Set the custom NavLinks here
