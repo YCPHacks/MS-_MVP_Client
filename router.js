@@ -2,10 +2,28 @@ const router = require('express').Router();
 const { fetch } = require('undici');
 const { claimIncludes } = require('express-openid-connect');
 
-router.use((req, res, next) => {
+router.use(async (req, res, next) => {
   res.locals.user = req.oidc.user;
   res.locals.isAuthenticated = req.oidc.isAuthenticated();
 
+  const user = req.oidc.user;
+  try {
+    const results = await fetch(`${process.env.GET_USER_METADATA_URL}?user_id=${user.sub}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then((res) => res.json());
+    // console.log(user);
+    console.log(results);
+    const keys = Object.keys(results.user_metadata);
+    keys.forEach((key) => {
+      res.locals.user[key] = results.user_metadata[key];
+    });
+  } catch (err) {
+    console.error(err);
+  }
+  console.log(res.locals.user);
   // Set the custom NavLinks here
   res.locals.navLinks = [
     {
@@ -96,6 +114,38 @@ router.post('/hardware-inventory/create', claimIncludes('@ycphacks/roles', 'Orga
 // router.get('/callback', (req, res) => {
 //   res.redirect('/');
 // });
+
+router.get('/profile', async (req, res) => {
+  res.status(200).render('profile.pug');
+});
+
+router.post('/profile', async (req, res) => {
+  const user = req.oidc.user;
+
+  // Filter out metadata that is not changed
+  const filtered_user_metadata = Object.keys(req.body).reduce((acc, key) => {
+    console.log(key, user[`@ycphacks/${key}`], req.body[key], req.body[key] !== user[`@ycphacks/${key}`]);
+    if (req.body[key] !== user[`@ycphacks/${key}`]) {
+      acc[key] = req.body[key];
+    }
+    return acc;
+  }, {});
+  console.log(filtered_user_metadata);
+
+  // Trigger Digital Ocean Function
+  await fetch(`${process.env.UPDATE_USER_METADATA_URL}`, {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      user_id: user.sub,
+      user_metadata: filtered_user_metadata
+    })
+  });
+
+  res.redirect(303, '/profile');
+});
 
 router.use((req, res, next) => {
   res.status(404).render('404.pug');
